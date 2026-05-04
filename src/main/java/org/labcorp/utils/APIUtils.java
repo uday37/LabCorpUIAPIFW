@@ -19,34 +19,23 @@ public class APIUtils {
     private static final String BASE_URL  = ConfigReader.getProperty("baseurl");
     protected static final String REQRES_URL = "https://reqres.in/api";
 
-    public static Response getRequest(String url) {
+    public static Response getRequest(String resourcePath, Map headers) {
         RestAssured.baseURI =BASE_URL;
+        System.out.println("BaseUrl:"+BASE_URL);
         RequestSpecification request = RestAssured.given();
 
         request.header("Content-Type", "application/json");
-        Response response = request.get(url);
+        Response response = request.headers(headers).get(resourcePath);
+        System.out.println("resourcePath:"+resourcePath);
 //        System.out.println(response.asString());
-        JsonPath jsonPath = response.jsonPath();
+//        JsonPath jsonPath = response.jsonPath();
         return response;
     }
 
-//    public static void verifyResponse(Response response, Map<String, String> mp) {
-//
-//        System.out.println(response.asString());
-//        JsonPath jsonPath = response.jsonPath();
-//        String path= jsonPath.get(mp.get("path"));
-//        List<String> emails = jsonPath.getList("headers.Host");
-//        String firstUserName = jsonPath.getString("data[0].first_name");
-//
-//    }
-
-    public static Response postRequest(String url, File playLoad) {
+    public static Response postRequest(String resourcePath, File playLoad) {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
-//        request.header("Authorization", "Bearer " + token)
-//                .header("Content-Type", "application/json");
-
-        Response response = request.body(playLoad).post(url);
+        Response response = request.body(playLoad).post(resourcePath);
         System.out.println(response.asString());
         return response;
     }
